@@ -3,14 +3,14 @@ defmodule Protohackers.IsPrimeServer do
 
   require Logger
 
-  def start_link([] = _opts) do
-    GenServer.start_link(__MODULE__, :no_state)
+  def start_link(port \\ 11236) do
+    GenServer.start_link(__MODULE__, port)
   end
 
   defstruct [:listen_socket, :supervisor]
 
   @impl true
-  def init(:no_state) do
+  def init(port) do
     {:ok, supervisor} = Task.Supervisor.start_link(max_children: 100)
 
     listen_options = [
@@ -26,9 +26,9 @@ defmodule Protohackers.IsPrimeServer do
       packet: :line
     ]
 
-    case :gen_tcp.listen(11236, listen_options) do
+    case :gen_tcp.listen(port, listen_options) do
       {:ok, listen_socket} ->
-        Logger.info("Starting isPrime server on port 11236")
+        Logger.info("Starting isPrime server on port #{port}")
         state = %__MODULE__{listen_socket: listen_socket, supervisor: supervisor}
         {:ok, state, {:continue, :accept}}
 
