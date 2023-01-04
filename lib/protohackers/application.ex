@@ -10,8 +10,10 @@ defmodule Protohackers.Application do
   end
 
   defp children(:prod) do
-    # right now I only now how to have one port open from fly.io
-    [{Protohackers.IsPrimeServer, 8080}]
+    [
+      {Protohackers.EchoServer, 11235},
+      {Protohackers.IsPrimeServer, 11236}
+    ]
   end
 
   defp children(_other) do
