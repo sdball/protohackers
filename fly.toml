@@ -18,7 +18,7 @@ auto_rollback = true
 
 [[services]]
 http_checks = []
-internal_port = 11235
+internal_port = 8080
 processes = ["app"]
 protocol = "tcp"
 script_checks = []
@@ -29,7 +29,7 @@ type = "connections"
 
 [[services.ports]]
 handlers = []
-port = "11235"
+port = "8080"
 
 [[services.tcp_checks]]
 grace_period = "1s"
