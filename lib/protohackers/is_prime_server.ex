@@ -23,7 +23,9 @@ defmodule Protohackers.IsPrimeServer do
       # keep the peer socket open after the client closes its writes
       exit_on_close: false,
       # automatically split inputs by newline
-      packet: :line
+      packet: :line,
+      # increase default buffer to 100KB
+      buffer: 1024 * 100
     ]
 
     case :gen_tcp.listen(port, listen_options) do
