@@ -23,7 +23,8 @@ defmodule Protohackers.MixProject do
   defp deps do
     [
       {:jason, "~> 1.4.0"},
-      {:benchee, "~> 1.1.0", only: :dev}
+      {:benchee, "~> 1.1.0", only: :dev},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
   end
 end
