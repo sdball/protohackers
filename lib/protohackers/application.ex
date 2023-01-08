@@ -8,7 +8,8 @@ defmodule Protohackers.Application do
     children = [
       {Protohackers.EchoServer, 11235},
       {Protohackers.IsPrimeServer, 11236},
-      {Protohackers.AssetPriceServer, 11237}
+      {Protohackers.AssetPriceServer, 11237},
+      {Protohackers.ChatRoomServer, 11238}
     ]
 
     opts = [strategy: :one_for_one, name: Protohackers.Supervisor]
