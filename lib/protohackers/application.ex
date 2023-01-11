@@ -9,7 +9,8 @@ defmodule Protohackers.Application do
       {Protohackers.EchoServer, 11235},
       {Protohackers.IsPrimeServer, 11236},
       {Protohackers.AssetPriceServer, 11237},
-      {Protohackers.ChatRoomServer, 11238}
+      {Protohackers.ChatRoomServer, 11238},
+      {Protohackers.UnusualDatabaseProtocolServer, 11239}
     ]
 
     opts = [strategy: :one_for_one, name: Protohackers.Supervisor]

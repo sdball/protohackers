@@ -14,56 +14,100 @@ allowed_public_ports = []
 auto_rollback = true
 
 [[services]]
-http_checks = []
-internal_port = 11235
-processes = ["app"]
-protocol = "tcp"
-script_checks = []
+  http_checks = []
+  internal_port = 11235
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
 
-[[services.ports]]
-handlers = []
-port = "11235"
+  [[services.ports]]
+  handlers = []
+  port = "11235"
 
-[[services]]
-http_checks = []
-internal_port = 11236
-processes = ["app"]
-protocol = "tcp"
-script_checks = []
+  [services.concurrency]
+  hard_limit = 25
+  soft_limit = 20
+  type = "connections"
 
-[[services.ports]]
-handlers = []
-port = "11236"
-
-[[services]]
-http_checks = []
-internal_port = 11237
-processes = ["app"]
-protocol = "tcp"
-script_checks = []
-
-[[services.ports]]
-handlers = []
-port = "11237"
+  [[services.tcp_checks]]
+  grace_period = "15s"
+  interval = "30s"
+  restart_limit = 0
+  timeout = "2s"
 
 [[services]]
-http_checks = []
-internal_port = 11238
-processes = ["app"]
-protocol = "tcp"
-script_checks = []
+  http_checks = []
+  internal_port = 11236
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
 
-[[services.ports]]
-handlers = []
-port = "11238"
+  [[services.ports]]
+  handlers = []
+  port = "11236"
 
-[services.concurrency]
-hard_limit = 25
-soft_limit = 20
-type = "connections"
+  [services.concurrency]
+  hard_limit = 25
+  soft_limit = 20
+  type = "connections"
 
-[[services.tcp_checks]]
-grace_period = "15s"
-interval = "30s"
-restart_limit = 0
-timeout = "2s"
+  [[services.tcp_checks]]
+  grace_period = "15s"
+  interval = "30s"
+  restart_limit = 0
+  timeout = "2s"
+
+[[services]]
+  http_checks = []
+  internal_port = 11237
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+
+  [[services.ports]]
+  handlers = []
+  port = "11237"
+
+  [services.concurrency]
+  hard_limit = 25
+  soft_limit = 20
+  type = "connections"
+
+  [[services.tcp_checks]]
+  grace_period = "15s"
+  interval = "30s"
+  restart_limit = 0
+  timeout = "2s"
+
+[[services]]
+  http_checks = []
+  internal_port = 11238
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+
+  [[services.ports]]
+  handlers = []
+  port = "11238"
+
+  [services.concurrency]
+  hard_limit = 25
+  soft_limit = 20
+  type = "connections"
+
+  [[services.tcp_checks]]
+  grace_period = "15s"
+  interval = "30s"
+  restart_limit = 0
+  timeout = "2s"
+
+[[services]]
+  http_checks = []
+  internal_port = 11239
+  processes = ["app"]
+  protocol = "udp"
+  script_checks = []
+
+  [[services.ports]]
+  handlers = []
+  port = "11239"
