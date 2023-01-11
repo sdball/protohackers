@@ -261,6 +261,9 @@ defmodule Protohackers.ChatRoomServer do
         chat_room(socket, username)
         broadcast_user_left(username)
 
+      {:error, :closed} ->
+        :ok
+
       {:error, reason} ->
         Logger.error("[ChatRoomServer] failed to join #{inspect(reason)}")
     end
