@@ -104,9 +104,8 @@ defmodule Protohackers.ChatRoomServer do
     listen_options = [
       # receive data as binaries (instead of lists)
       mode: :binary,
-      # explicitly retrieve packets by calling `:gen_tcp.recv/2`
-      # (by default incoming packets would be sent as messages)
-      active: false,
+      # receive incoming packets as messages
+      active: true,
       # allow reusing the address if the listener crashes
       reuseaddr: true,
       # keep the peer socket open after the client closes its writes
@@ -134,14 +133,14 @@ defmodule Protohackers.ChatRoomServer do
 
   @impl true
   def handle_continue(:accept, %__MODULE__{} = state) do
-    case :gen_tcp.accept(state.listen_socket) do
-      {:ok, socket} ->
-        Task.Supervisor.start_child(state.supervisor, fn ->
-          handle_connection(socket)
-        end)
-
-        {:noreply, state, {:continue, :accept}}
-
+    with {:ok, socket} <- :gen_tcp.accept(state.listen_socket),
+         {:ok, task_pid} <-
+           Task.Supervisor.start_child(state.supervisor, fn ->
+             handle_connection(socket)
+           end) do
+      :gen_tcp.controlling_process(socket, task_pid)
+      {:noreply, state, {:continue, :accept}}
+    else
       {:error, reason} ->
         Logger.error("[ChatRoomServer] Unable to accept connection #{inspect(reason)}")
         {:stop, reason, state}
@@ -199,6 +198,9 @@ defmodule Protohackers.ChatRoomServer do
     else
       {:error, :unprintable} ->
         chat_room(socket, username)
+
+      {:halt, :user_left} ->
+        :ok
 
       error ->
         error
@@ -264,6 +266,9 @@ defmodule Protohackers.ChatRoomServer do
       {:error, :closed} ->
         :ok
 
+      {:halt, :user_left} ->
+        :ok
+
       {:error, reason} ->
         Logger.error("[ChatRoomServer] failed to join #{inspect(reason)}")
     end
@@ -293,33 +298,32 @@ defmodule Protohackers.ChatRoomServer do
   end
 
   def receive_input(socket) do
-    with {:ok, input} <- :gen_tcp.recv(socket, 0, 100),
-         true <- String.printable?(input) do
-      {:ok, String.replace(input, ~r|\s*$|, "")}
-    else
-      false ->
-        {:error, :unprintable}
-
-      {:error, :timeout} ->
-        receive do
-          {:broadcast_user_left, username} ->
-            :gen_tcp.send(socket, "* #{username} left\n")
-            receive_input(socket)
-
-          {:broadcast_user_joined, username} ->
-            :gen_tcp.send(socket, "* #{username} joined\n")
-            receive_input(socket)
-
-          {:user_message, username, message} ->
-            :gen_tcp.send(socket, "[#{username}] #{message}\n")
-            receive_input(socket)
-        after
-          100 ->
-            receive_input(socket)
+    receive do
+      {:tcp, _from, input} ->
+        if String.printable?(input) do
+          {:ok, String.replace(input, ~r|\s*$|, "")}
+        else
+          {:error, :unprintable}
         end
 
-      error ->
-        error
+      {:broadcast_user_left, username} ->
+        :gen_tcp.send(socket, "* #{username} left\n")
+        receive_input(socket)
+
+      {:broadcast_user_joined, username} ->
+        :gen_tcp.send(socket, "* #{username} joined\n")
+        receive_input(socket)
+
+      {:user_message, username, message} ->
+        :gen_tcp.send(socket, "[#{username}] #{message}\n")
+        receive_input(socket)
+
+      {:tcp_closed, _from} ->
+        {:halt, :user_left}
+
+      other ->
+        Logger.info("[ChatRoomServer] unexpected message #{inspect(other)}")
+        receive_input(socket)
     end
   end
 end
