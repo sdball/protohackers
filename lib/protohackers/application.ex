@@ -10,7 +10,8 @@ defmodule Protohackers.Application do
       {Protohackers.IsPrimeServer, 11236},
       {Protohackers.AssetPriceServer, 11237},
       {Protohackers.ChatRoomServer, 11238},
-      {Protohackers.UnusualDatabaseProtocolServer, 11239}
+      {Protohackers.UnusualDatabaseProtocolServer, 11239},
+      {Protohackers.MobInTheMiddleServer, 11240}
     ]
 
     opts = [strategy: :one_for_one, name: Protohackers.Supervisor]
