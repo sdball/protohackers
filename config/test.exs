@@ -1,3 +1,3 @@
 import Config
 
-config :logger, level: :none
+# config :logger, level: :none

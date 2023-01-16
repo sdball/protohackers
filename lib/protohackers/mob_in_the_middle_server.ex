@@ -102,7 +102,7 @@ defmodule Protohackers.MobInTheMiddleServer do
   def rewrite(message) do
     message
     |> String.split(" ")
-    |> Enum.map(& Regex.replace(@boguscoin, &1, "7YWHMfk9JZe0LM0g1ZauHuiSxhI"))
+    |> Enum.map(&Regex.replace(@boguscoin, &1, "7YWHMfk9JZe0LM0g1ZauHuiSxhI"))
     |> Enum.join(" ")
   end
 end

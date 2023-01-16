@@ -184,7 +184,9 @@ defmodule Protohackers.MobInTheMiddleServerTest do
     end
 
     test "more addresses" do
-      message = "you can also use one of these 7Ecmqn1BG3AawAPrRnVeMnKXo0 7iKDZEwPZSqIvDnHvVN2r0hUWXD5rHX 7adNeSwJkMakpEcln9HEtthSRtxdmEHOT8T\n"
+      message =
+        "you can also use one of these 7Ecmqn1BG3AawAPrRnVeMnKXo0 7iKDZEwPZSqIvDnHvVN2r0hUWXD5rHX 7adNeSwJkMakpEcln9HEtthSRtxdmEHOT8T\n"
+
       rewrite = MobInTheMiddleServer.rewrite(message)
 
       assert rewrite ==
@@ -198,7 +200,9 @@ defmodule Protohackers.MobInTheMiddleServerTest do
     end
 
     test "product id not boguscoin" do
-      message = "This is a product ID, not a Boguscoin: 7RodDSA6lw2RDq9PUfEgd4NHjH6Eeov-JPtlB5DZzSYE1jtPImEBRMT3byDUiKH-1234\n"
+      message =
+        "This is a product ID, not a Boguscoin: 7RodDSA6lw2RDq9PUfEgd4NHjH6Eeov-JPtlB5DZzSYE1jtPImEBRMT3byDUiKH-1234\n"
+
       rewrite = MobInTheMiddleServer.rewrite(message)
       assert rewrite == message
     end
