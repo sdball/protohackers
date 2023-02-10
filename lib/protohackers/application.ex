@@ -11,7 +11,8 @@ defmodule Protohackers.Application do
       {Protohackers.AssetPriceServer, 11237},
       {Protohackers.ChatRoomServer, 11238},
       {Protohackers.UnusualDatabaseProtocolServer, 11239},
-      {Protohackers.MobInTheMiddleServer, 11240},
+      # {Protohackers.MobInTheMiddleServer, 11240},
+      {Protohackers.MITM.Supervisor, port: 11240},
       {Protohackers.SpeedLimitServer, 11241}
     ]
 
