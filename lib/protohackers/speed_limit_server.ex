@@ -40,10 +40,8 @@ defmodule Protohackers.SpeedLimitServer do
   def handle_continue(:accept, %__MODULE__{} = state) do
     with {:ok, socket} <- :gen_tcp.accept(state.listen_socket),
          {:ok, pid} <- start_client(socket) do
-      dbg(socket)
-      dbg(pid)
       Logger.info("SLS.client_started pid=#{inspect(pid)}")
-      :gen_tcp.controlling_process(socket, pid) |> dbg()
+      :gen_tcp.controlling_process(socket, pid)
       {:noreply, state, {:continue, :accept}}
     else
       {:error, reason} ->
