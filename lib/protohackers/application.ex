@@ -13,7 +13,8 @@ defmodule Protohackers.Application do
       {Protohackers.UnusualDatabaseProtocolServer, 11239},
       # {Protohackers.MobInTheMiddleServer, 11240},
       {Protohackers.MITM.Supervisor, port: 11240},
-      {Protohackers.SpeedLimitServer, 11241}
+      # {Protohackers.SpeedLimitServer, 11241}
+      {Protohackers.SpeedDaemon.Supervisor, port: 11241}
     ]
 
     opts = [strategy: :one_for_one, name: Protohackers.Supervisor]
