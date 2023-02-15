@@ -7,6 +7,11 @@ ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 
 FROM ${BUILDER_IMAGE} as builder
 
+ARG APPLICATION="speed_daemon"
+
+# set build ENV
+ENV MIX_ENV="prod"
+
 # install build dependencies
 RUN apt-get update -y && apt-get install -y build-essential git npm \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
@@ -14,28 +19,34 @@ RUN apt-get update -y && apt-get install -y build-essential git npm \
 # prepare build dir
 WORKDIR /app
 
-# install hex + rebar
-RUN mix local.hex --force && \
-    mix local.rebar --force
+# Install Hex and rebar3
+RUN mix do local.hex --force, local.rebar --force
 
-# set build ENV
-ENV MIX_ENV="prod"
+# Copy configuration from this app and all children
+COPY config config
 
-# compile and release
-COPY mix.exs mix.lock ./
-RUN mix deps.get --only $MIX_ENV
-RUN mix deps.compile
-COPY lib lib
+# Copy mix.exs and mix.lock from all children applications
+COPY mix.exs ./
+COPY apps/${APPLICATION}/mix.exs apps/${APPLICATION}/mix.exs
+COPY apps/${APPLICATION}/mix.lock apps/${APPLICATION}/mix.lock
+RUN mix do deps.get --only $MIX_ENV, deps.compile
+
+# Copy lib for all applications and compile
+COPY apps/${APPLICATION}/lib apps/${APPLICATION}/lib
 RUN mix compile
-COPY rel rel
-RUN mix release
+
+# Changes to config/runtime.exs don't require recompiling the code
+COPY apps/${APPLICATION}/rel apps/${APPLICATION}/rel
+RUN mix release ${APPLICATION}
 
 # start a new build stage so that the final image will only contain
 # the compiled release and other runtime necessities
 FROM ${RUNNER_IMAGE}
 
+ENV APPLICATION="speed_daemon"
+
 RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales \
-  && apt-get clean && rm -f /var/lib/apt/lists/*_*
+    && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
@@ -43,17 +54,13 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-WORKDIR "/app"
+WORKDIR /app
 RUN chown nobody /app
 
-# set runner ENV
-ENV MIX_ENV="prod"
-
-# Only copy the final release from the build stage
-COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/further_from ./
+COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel ./
 
 USER nobody
 
 ENV ERL_AFLAGS "-proto_dist inet6_tcp"
 
-CMD ["/app/protohackers/bin/protohackers", "start"]
+CMD ["/app/${APPLICATION}/bin/${APPLICATION}", "start"]

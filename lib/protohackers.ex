@@ -1,2 +1,0 @@
-defmodule Protohackers do
-end

@@ -9,138 +9,37 @@ processes = []
 builder = "heroku/buildpacks:20"
 buildpacks = ["https://cnb-shim.herokuapp.com/v1/hashnuke/elixir"]
 
+[env]
+LOG_LEVEL = "debug"
+TCP_PORT = "5000"
+UDP_PORT = "6000"
+
 [experimental]
 allowed_public_ports = []
 auto_rollback = true
 
 [[services]]
-  http_checks = []
-  internal_port = 11235
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
+internal_port = 11241
+protocol = "tcp"
 
   [[services.ports]]
   handlers = []
-  port = "11235"
-
-  [services.concurrency]
-  hard_limit = 25
-  soft_limit = 20
-  type = "connections"
-
-  [[services.tcp_checks]]
-  grace_period = "15s"
-  interval = "30s"
-  restart_limit = 0
-  timeout = "2s"
-
-[[services]]
-  http_checks = []
-  internal_port = 11236
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-
-  [[services.ports]]
-  handlers = []
-  port = "11236"
-
-  [services.concurrency]
-  hard_limit = 25
-  soft_limit = 20
-  type = "connections"
-
-  [[services.tcp_checks]]
-  grace_period = "15s"
-  interval = "30s"
-  restart_limit = 0
-  timeout = "2s"
-
-[[services]]
-  http_checks = []
-  internal_port = 11237
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-
-  [[services.ports]]
-  handlers = []
-  port = "11237"
-
-  [services.concurrency]
-  hard_limit = 25
-  soft_limit = 20
-  type = "connections"
-
-  [[services.tcp_checks]]
-  grace_period = "15s"
-  interval = "30s"
-  restart_limit = 0
-  timeout = "2s"
-
-[[services]]
-  http_checks = []
-  internal_port = 11238
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-
-  [[services.ports]]
-  handlers = []
-  port = "11238"
-
-  [services.concurrency]
-  hard_limit = 25
-  soft_limit = 20
-  type = "connections"
-
-  [[services.tcp_checks]]
-  grace_period = "15s"
-  interval = "30s"
-  restart_limit = 0
-  timeout = "2s"
-
-[[services]]
-  http_checks = []
-  internal_port = 11239
-  processes = ["app"]
-  protocol = "udp"
-  script_checks = []
-
-  [[services.ports]]
-  handlers = []
-  port = "11239"
-
-[[services]]
-  http_checks = []
-  internal_port = 11240
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-
-  [[services.ports]]
-  handlers = []
-  port = "11240"
-
-[[services]]
-  http_checks = []
-  internal_port = 11241
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-
-  [[services.ports]]
-  handlers = []
-  port = "11241"
+  port = 5000
 
   [services.concurrency]
   hard_limit = 250
   soft_limit = 200
   type = "connections"
 
-  [[services.tcp_checks]]
-  grace_period = "15s"
-  interval = "30s"
-  restart_limit = 0
-  timeout = "2s"
+[[services]]
+internal_port = 11239
+protocol = "udp"
+
+  [[services.ports]]
+  handlers = []
+  port = 6000
+
+  [services.concurrency]
+  hard_limit = 250
+  soft_limit = 200
+  type = "connections"
