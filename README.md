@@ -18,5 +18,10 @@ $ mix run --no-halt
 
 ## Problems
 
-* [Problem 0: Smoke Test](apps/smoke_test/README.md)
-* [Problem 1: Prime Time](apps/prime_time/README.md)
+* [Problem 0: Smoke Test](apps/smoke_test/readme.md)
+* [Problem 1: Prime Time](apps/prime_time/readme.md)
+* [Problem 2: Means to an End](apps/means_to_an_end/readme.md)
+* [Problem 3: Budget Chat](apps/budget_chat/readme.md)
+* [Problem 4: Unusual Database Program](apps/unusual_database_program/readme.md)
+* [Problem 5: Mob in the Middle](apps/mob_in_the_middle/readme.md)
+* [Problem 6: Speed Daemon](apps/speed_daemon/readme.md)
