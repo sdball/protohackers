@@ -7,5 +7,6 @@ config :budget_chat, port: 11238
 config :unusual_database_program, port: 11239
 config :mob_in_the_middle, port: 11240, target: [host: ~c(localhost), port: 11238]
 config :speed_daemon, port: 11241
+config :line_reversal, port: 11242
 
 import_config "#{config_env()}.exs"

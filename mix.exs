@@ -9,8 +9,29 @@ defmodule Protohackers.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       releases: [
-        echo_server: [
-          applications: [echo_server: :permanent]
+        smoke_test: [
+          applications: [smoke_test: :permanent]
+        ],
+        prime_time: [
+          applications: [prime_time: :permanent]
+        ],
+        means_to_an_end: [
+          applications: [means_to_an_end: :permanent]
+        ],
+        budget_chat: [
+          applications: [budget_chat: :permanent]
+        ],
+        unusual_database_program: [
+          applications: [unusual_database_program: :permanent]
+        ],
+        mob_in_the_middle: [
+          applications: [mob_in_the_middle: :permanent]
+        ],
+        speed_daemon: [
+          applications: [speed_daemon: :permanent]
+        ],
+        line_reversal: [
+          applications: [line_reversal: :permanent]
         ]
       ]
     ]
