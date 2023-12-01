@@ -267,9 +267,6 @@ defmodule BudgetChat do
         chat_room(socket, username)
         broadcast_user_left(username)
 
-      {:error, :closed} ->
-        :ok
-
       {:halt, :user_left} ->
         :ok
 
